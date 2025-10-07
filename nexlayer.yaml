@@ -1,0 +1,35 @@
+application:
+  name: "cat-chat"
+  pods:
+    # Frontend - React app with Nginx reverse proxy
+    - name: "frontend"
+      image: "registry.nexlayer.io/nexlayer-mcp/nexlayer/cat-chat-frontend:f51be2b"
+      path: "/"
+      servicePorts: [80]
+
+    # Backend - Node.js + Express + Socket.io server
+    - name: "backend"
+      image: "registry.nexlayer.io/nexlayer-mcp/nexlayer/cat-chat-backend:f51be2b"
+      servicePorts: [3001]
+      vars:
+        PORT: "3001"
+        DB_HOST: "database.pod"
+        DB_PORT: "5432"
+        DB_NAME: "catchat"
+        DB_USER: "postgres"
+        DB_PASSWORD: "postgres"
+        CLIENT_URL: "<% URL %>"
+
+    # Database - PostgreSQL 15
+    - name: "database"
+      image: "registry.nexlayer.io/nexlayer-mcp/nexlayer/cat-chat-database:f51be2b"
+      servicePorts: [5432]
+      vars:
+        POSTGRES_DB: "catchat"
+        POSTGRES_USER: "postgres"
+        POSTGRES_PASSWORD: "postgres"
+        PGDATA: "/var/lib/postgresql/data"
+      volumes:
+        - name: "postgres-data"
+          size: "2Gi"
+          mountPath: "/var/lib/postgresql"
