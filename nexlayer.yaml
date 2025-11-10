@@ -3,13 +3,13 @@ application:
   pods:
     # Frontend - React app with Nginx reverse proxy
     - name: "frontend"
-      image: "registry.nexlayer.io/nexlayer-mcp/8e14bbff-3a87-4f3b-b942-8bd4bd38aa1e/cat-chat-app-2654a1b2-frontend:8b162917-1762796476"
+      image: "registry.nexlayer.io/nexlayer-mcp/e5bb2f10-c504-4b24-a4a8-c5a7a46f1197/cat-chat-app-ed22c3be-frontend:fb8eb906-1762799452"
       path: "/"
       servicePorts: [80]
 
     # Backend - Node.js + Express + Socket.io server
     - name: "backend"
-      image: "registry.nexlayer.io/nexlayer-mcp/8e14bbff-3a87-4f3b-b942-8bd4bd38aa1e/cat-chat-app-2654a1b2-backend:8b162917-1762796476"
+      image: "registry.nexlayer.io/nexlayer-mcp/e5bb2f10-c504-4b24-a4a8-c5a7a46f1197/cat-chat-app-ed22c3be-backend:fb8eb906-1762799452"
       servicePorts: [3001]
       vars:
         PORT: "3001"
@@ -22,7 +22,7 @@ application:
 
     # Database - PostgreSQL 15
     - name: "database"
-      image: "registry.nexlayer.io/nexlayer-mcp/8e14bbff-3a87-4f3b-b942-8bd4bd38aa1e/cat-chat-app-2654a1b2-database:8b162917-1762796476"
+      image: "registry.nexlayer.io/nexlayer-mcp/e5bb2f10-c504-4b24-a4a8-c5a7a46f1197/cat-chat-app-ed22c3be-database:fb8eb906-1762799452"
       servicePorts: [5432]
       vars:
         POSTGRES_DB: "catchat"
