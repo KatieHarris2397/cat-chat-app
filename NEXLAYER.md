@@ -15,27 +15,26 @@
 
 ## Project Summary
 <!-- nexlayer:section agent-managed=project_summary -->
-A real-time cat-themed chat application featuring WebSocket support for instant messaging and a PostgreSQL database for persistent storage.
+A real-time, cat-themed chat application utilizing WebSockets for instant messaging and PostgreSQL for persistent chat history, featuring a three-tier architecture with React, Node.js, and PostgreSQL.
 <!-- nexlayer:end -->
 
 ## Technology Stack
 <!-- nexlayer:section agent-managed=tech_stack -->
 | Name | Kind | Version | Detected From |
 |------|------|---------|---------------|
-| React | framework | unknown | README.md |
-| Node.js | language | 18+ | README.md |
-| Express | framework | unknown | README.md |
-| Socket.io | tool | unknown | README.md |
-| PostgreSQL | database | 15 | README.md |
-| Nginx | infra | unknown | README.md |
-| Docker | tool | 20.10+ | README.md |
+| React | framework | latest | frontend |
+| Node.js | language | 18+ | backend |
+| Express | framework | latest | backend |
+| Socket.io | tool | latest | backend, frontend |
+| PostgreSQL | database | 15 | database |
+| Nginx | infra | latest | README.md |
 <!-- nexlayer:end -->
 
 ## Repository Structure
 <!-- nexlayer:section agent-managed=structure_map -->
-- frontend/ — React frontend application
-- backend/ — Node.js Express API and Socket.io server
-- database/ — PostgreSQL configuration and initialization
+- frontend/ — React client application
+- backend/ — Node.js Express server with Socket.io
+- database/ — PostgreSQL initialization scripts
 <!-- nexlayer:end -->
 
 ## External Services Required
@@ -80,27 +79,26 @@ DATABASE_URL=postgresql://localhost:5432/catchat
 | `"backend"` | `DB_PORT` | `"5432"` | plain |
 | `"backend"` | `DB_NAME` | `"catchat"` | plain |
 | `"backend"` | `DB_USER` | `"postgres"` | plain |
-| `"backend"` | `DB_PASSWORD` | _(set via Nexlayer dashboard)_ | secret |
+| `"backend"` | `DB_PASSWORD` | `"${DB_PASSWORD}"` | inter-pod |
 | `"backend"` | `CLIENT_URL` | `"<% URL %>"` | plain |
 | `"database"` | `POSTGRES_DB` | `"catchat"` | plain |
 | `"database"` | `POSTGRES_USER` | `"postgres"` | plain |
 | `"database"` | `POSTGRES_PASSWORD` | _(set via Nexlayer dashboard)_ | secret |
 | `"database"` | `PGDATA` | `"/var/lib/postgresql/data"` | plain |
-| `"postgres-data"` | `size` | `"2Gi"` | plain |
-| `"postgres-data"` | `mountPath` | `"/var/lib/postgresql"` | plain |
+| `cat-chat-postgres-data` | `size` | `"2Gi"` | plain |
+| `cat-chat-postgres-data` | `mountPath` | `"/var/lib/postgresql"` | plain |
 
 ### Secrets Required
 
 Set these in the Nexlayer dashboard before deploying:
 
-- `DB_PASSWORD` (`"backend"` pod)
 - `POSTGRES_PASSWORD` (`"database"` pod)
 
 ### nexlayer.yaml
 
 ```yaml
 application:
-  name: "cat-chat"
+  name: cat-chat
   pods:
     # Frontend - React app with Nginx reverse proxy
     - name: "frontend"
@@ -118,7 +116,7 @@ application:
         DB_PORT: "5432"
         DB_NAME: "catchat"
         DB_USER: "postgres"
-        DB_PASSWORD: "postgres"
+        DB_PASSWORD: "${DB_PASSWORD}"
         CLIENT_URL: "<% URL %>"
 
     # Database - PostgreSQL 15
@@ -131,11 +129,10 @@ application:
         POSTGRES_PASSWORD: "postgres"
         PGDATA: "/var/lib/postgresql/data"
       volumes:
-        - name: "postgres-data"
+        - name: cat-chat-postgres-data
           size: "2Gi"
           mountPath: "/var/lib/postgresql"
 ```
-
 <!-- nexlayer:end -->
 
 ## Nexlayer Deployment Plan
@@ -168,14 +165,14 @@ application:
 
 ## Nexlayer Configuration
 <!-- nexlayer:section agent-managed=nexlayer_config -->
-**Last deployed:** 2026-06-09T23:29:35Z  
+**Last deployed:** 2026-07-16T18:51:56Z  
 **Live URL:** https://kitbear-studio-cat-chat.cloud.nexlayer.ai  
 **Runtime:**  · **Port:** auto-detected  
-**Deploy branch:** main  
+**Deploy branch:** nexlayer  
 
 ```yaml
 application:
-  name: "cat-chat"
+  name: cat-chat
   pods:
     # Frontend - React app with Nginx reverse proxy
     - name: "frontend"
@@ -193,7 +190,7 @@ application:
         DB_PORT: "5432"
         DB_NAME: "catchat"
         DB_USER: "postgres"
-        DB_PASSWORD: "postgres"
+        DB_PASSWORD: "${DB_PASSWORD}"
         CLIENT_URL: "<% URL %>"
 
     # Database - PostgreSQL 15
@@ -206,7 +203,7 @@ application:
         POSTGRES_PASSWORD: "postgres"
         PGDATA: "/var/lib/postgresql/data"
       volumes:
-        - name: "postgres-data"
+        - name: cat-chat-postgres-data
           size: "2Gi"
           mountPath: "/var/lib/postgresql"
 ```
@@ -216,6 +213,7 @@ application:
 <!-- nexlayer:section agent-managed=build_history -->
 | Date | Status | Notes |
 |------|--------|-------|
-| 2026-06-09T23:28:49Z | analyzed | initial repo analysis |
-| 2026-06-09T23:29:35Z | success | deployed https://kitbear-studio-cat-chat.cloud.nexlayer.ai |
+| 2026-07-16T18:45:19Z | analyzed | initial repo analysis |
+| 2026-07-16T18:51:56Z | success | deployed https://kitbear-studio-cat-chat.cloud.nexlayer.ai |
 <!-- nexlayer:end -->
+
