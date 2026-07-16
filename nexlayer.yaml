@@ -1,5 +1,5 @@
 application:
-  name: "cat-chat"
+  name: cat-chat
   pods:
     # Frontend - React app with Nginx reverse proxy
     - name: "frontend"
@@ -17,7 +17,7 @@ application:
         DB_PORT: "5432"
         DB_NAME: "catchat"
         DB_USER: "postgres"
-        DB_PASSWORD: "postgres"
+        DB_PASSWORD: "${DB_PASSWORD}"
         CLIENT_URL: "<% URL %>"
 
     # Database - PostgreSQL 15
@@ -30,6 +30,6 @@ application:
         POSTGRES_PASSWORD: "postgres"
         PGDATA: "/var/lib/postgresql/data"
       volumes:
-        - name: "postgres-data"
+        - name: cat-chat-postgres-data
           size: "2Gi"
           mountPath: "/var/lib/postgresql"
